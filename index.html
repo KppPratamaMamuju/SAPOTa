@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <title> SAPOTa </title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body onload="getLocation()">
+  <div class="container">
+    <div class="logo-container"> <img class="logo" src="sapota.png"> </div>
+    <div class="disclaimer">
+      <p> Disclaimer: Data ini digunakan untuk pembaharuan data serta penyerapan saran, komplain, berita dari masyarakat
+      </p>
+    </div>
+    <div class="content">
+      <div class="user-details">
+        <div class="input-box">
+          <form id="uploadForm"
+            action="https://script.google.com/macros/s/AKfycbzU8e7IIPb4ohOKVjPzbvDnpXPxgWbjk51xqmgz5MZwhrAvVEqbsM8ulfYoPe--hzcL8g/exec"
+            method="POST">
+            <input type="hidden" value="" name="fileContent" id="fileContent">
+            <input type="hidden" value="" name="filename" id="filename">
+            <div class="user-details">
+              <div class="input-box">
+                <label for="nama" class="form-label">Nama Pengirim</label>
+                <input type="text" id="nama" name="nama" class="form-control" placeholder="Masukan nama lengkap anda"
+                  required>
+              </div>
+              <div class="input-box">
+                <label for="jenis_data" class="form-label">Jenis Pengisian Form</label>
+                <select type="jenis_data" id="jenis_data" name="jenis_data" class="form-control"
+                  placeholder="Pilih jenis pengisian" required>
+                  <option>--Pilih Jenis Pengisian Form--</option>
+                  <option>Mengisi Data Objek</option>
+                  <option>Aduan/Saran/Komplain</option>
+                </select>
+              </div>
+              <div class="input-box">
+                <label for="nama_objek" class="form-label">Nama Objek/Judul</label>
+                <input type="text" id="nama_objek" name="nama_objek" class="form-control"
+                  placeholder="Masukan nama objek atau judul " required>
+              </div>
+              <div class="input-box">
+                <label for="alamat" class="form-label">Alamat Objek</label>
+                <input type="text" id="alamat" name="alamat" class="form-control" placeholder="Masukan alamat Objek"
+                  required>
+              </div>
+              <div class="input-box">
+                <label for="Lokasi" class="form-label">Lokasi</label>
+                <input type="text" id="latitude" name="koordinat" class="form-control" placeholder="hidupkan GPS anda!"
+                  required readonly>
+              </div>
+              <script>
+                function validateForm() {
+                  var x = document.forms["form-box"]["latitude"].value;
+                  if (x == "" || x == null) {
+                    alert("Nyalakan GPS Anda");
+                    return false;
+                  }
+                }
+              </script>
+              <script>
+                const x = document.getElementById("latitude");
+
+                function getLocation() {
+                  if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                  } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                    y.innerHTML = "Geolocation is not supported by this browser.";
+                  }
+                }
+
+                function showPosition(position) {
+                  x.value = position.coords.latitude + ", " + position.coords.longitude;
+                }
+              </script>
+              <div class="input-box">
+                <label for="Keterangan" class="form-label">Keterangan</label>
+                <input type="text" id="Keterangan" name="Keterangan" class="form-control"
+                  placeholder="Keterangan (Optional)">
+              </div>
+          </form>
+          <div class="input-box">
+            <label for="file" class="form-label">Foto Objek</label>
+            <input required id="file" name="file" type="file" accept="image/*;capture=camera">
+          </div>
+          <div class="button" style="width: 100%;">
+            <input type="button" value="KIRIM DATA" onclick="UploadFile();" />
+          </div>
+          <div>
+            <button class="btn btn-danger" type="reset">RESET FORM</button>
+          </div>
+          <script>
+            function UploadFile() {
+              var reader = new FileReader();
+              var file = document.getElementById('file').files[0];
+              reader.onload = function () {
+                document.getElementById('fileContent').value = reader.result;
+                document.getElementById('filename').value = file.name;
+                document.getElementById('uploadForm').submit();
+              }
+              reader.readAsDataURL(file);
+            }
+          </script>
+</body>
+
+</html>
